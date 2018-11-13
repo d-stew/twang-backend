@@ -1,0 +1,35 @@
+{
+  "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
+  "rules": {
+    "align": [false],
+    "import-name": [false],
+    "max-line-length": [false],
+    "no-boolean-literal-compare": false,
+    "prefer-array-literal": false,
+    "semicolon": [false],
+    "strict-boolean-expressions": false,
+    "ter-arrow-parens": true,
+    "ter-arrow-body-style": ["error", "as-needed"],
+    "ter-max-len": false,
+    "triple-equals": [true, "allow-null-check"],
+    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"],
+    "quotemark": [true, "single", "avoid-escape"],
+    "tslint-config-airbnb/function-paren-newline": ["error", "consistent"]
+  },
+  "jsRules": {
+    "align": [false],
+    "import-name": [false],
+    "max-line-length": [false],
+    "no-boolean-literal-compare": false,
+    "prefer-array-literal": false,
+    "semicolon": [false],
+    "strict-boolean-expressions": false,
+    "ter-arrow-parens": true,
+    "ter-arrow-body-style": ["error", "as-needed"],
+    "ter-max-len": false,
+    "triple-equals": [true, "allow-null-check"],
+    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"],
+    "quotemark": [true, "single", "avoid-escape"],
+    "tslint-config-airbnb/function-paren-newline": ["error", "consistent"]
+  }
+}

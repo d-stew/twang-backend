@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "es2016",
+    "lib": ["es2017", "esnext.asynciterable"],
+    "outDir": "./dist",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "inlineSources": true,
+    "skipLibCheck": true,
+    "pretty": true,
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "baseUrl": "src",
+    "paths": { "*": ["typings/*"] }
+  },
+  "include": [
+    "src/**/*",
+    "test/**/*",
+    "server.ts",
+    ".env",
+    "app.js",
+    "config.ts"
+  ]
+}
