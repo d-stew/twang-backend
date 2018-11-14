@@ -1,10 +1,14 @@
-import { Router, Request, Response } from 'express'
+import { Router, Request, Response } from 'express';
+import * as twitterService from '../services/twitter.service';
 
-const router: Router = Router()
+const router: Router = Router();
 
-router.get('/', (req: Request, res: Response) => {
-  console.log('Request: ', req)
-  res.send('Hello!')
-})
+router.get('/', async (req: Request, res: Response) => {
+  twitterService.getTweets(req.query.keyword, (response: any) => {
+    const tweets = twitterService.cleanTweets(response.statuses);
+    
+    res.send(tweets);
+  })
+});
 
-export const MainRouter: Router = router
+export const TwitterRouter: Router = router;

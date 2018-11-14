@@ -1,0 +1,18 @@
+# Logs
+*.log
+
+# Webstorm
+.idea
+
+# Dependency directories
+node_modules
+
+# Code Coverage
+coverage
+.nyc_output
+
+# Typescript
+.tscache
+dist
+
+.env

@@ -7,6 +7,7 @@ import { log } from './src/utils/log.utils';
 import { config, Environment } from './config';
 
 import { MainRouter } from './src/routes/index';
+import { TwitterRouter } from './src/routes/twitter.routes';
 
 const app = express();
 
@@ -20,6 +21,7 @@ const corsOptions =
 app.use(cors(corsOptions));
 
 app.use('/', MainRouter);
+app.use('/twitter', TwitterRouter);
 
 // const graphQLServer = new ApolloServer({
 //   ...myGraphQLSchema,
