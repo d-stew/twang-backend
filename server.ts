@@ -1,22 +1,19 @@
 import http from 'http';
 import devIp from 'dev-ip';
-import { noop } from 'lodash';
+import { noop } from 'lodash'
 
-import app from './app';
-
-import { config, Environment } from './config';
-import { log } from './src/utils/log.utils';
+import app from './app'
+import { config, Environment } from './config'
+import { log } from './src/utils/log.utils'
 
 /* eslint-disable no-console */
 // set hostname, port and server
-const hostname =
-  (config.STATIC_IP && config.ENV === Environment.Development && devIp()) ||
-  undefined;
-const port = normalizePort(config.PORT);
+const hostname = (config.STATIC_IP && config.ENV === Environment.Development && devIp()) || undefined
+const port = normalizePort(config.PORT)
 
-app.set('port', port);
+app.set('port', port)
 
-const server = http.createServer(app);
+const server = http.createServer(app)
 
 if (
   config.FORCE_SYNC &&
@@ -25,7 +22,7 @@ if (
   runLocal();
 } else {
   runProduction();
-}
+} 
 
 async function runProduction() {
   log.info('Running in production mode');

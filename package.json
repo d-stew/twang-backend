@@ -7,6 +7,13 @@
     "start": "node ./bin/www",
     "tsc": "tsc"
   },
+  "prettier": {
+    "printWidth": 160,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "always"
+  },
   "dependencies": {
     "@types/bunyan": "^1.8.5",
     "@types/cookie-parser": "^1.4.1",
@@ -43,6 +50,8 @@
   },
   "devDependencies": {
     "eslint": "^5.9.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.0",
     "tslint-config-prettier": "^1.16.0"

@@ -1,11 +1,9 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express'
 
-const router: Router = Router();
+const router: Router = Router()
 
-router.get('/', (req: Request, res: Response) => {
-  console.log('Request: ', req);
+router.get('/', (_, res: Response) => {
+  res.send('Twang')
+})
 
-  res.send('Hello!');
-});
-
-export const MainRouter: Router = router;
+export const MainRouter: Router = router
