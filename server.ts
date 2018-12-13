@@ -1,5 +1,5 @@
-import http from 'http';
-import devIp from 'dev-ip';
+import http from 'http'
+import devIp from 'dev-ip'
 import { noop } from 'lodash'
 
 import app from './app'
@@ -22,7 +22,7 @@ if (
   runLocal();
 } else {
   runProduction();
-} 
+}
 
 async function runProduction() {
   log.info('Running in production mode');

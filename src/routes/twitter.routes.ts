@@ -12,4 +12,10 @@ router.get('/', async (req: Request, res: Response) => {
   })
 });
 
+router.get('/open-stream', async (req: Request, res: Response) => {
+  twitterService.openStream(req.query.keyword)
+
+  res.send('stream open')
+})
+
 export const TwitterRouter: Router = router;
