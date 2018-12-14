@@ -5,6 +5,7 @@
     "import-name": [false],
     "max-line-length": [false],
     "no-boolean-literal-compare": false,
+    "no-increment-decrement": false,
     "prefer-array-literal": false,
     "semicolon": [false],
     "strict-boolean-expressions": false,

@@ -12,10 +12,20 @@ router.get('/', async (req: Request, res: Response) => {
   })
 });
 
-router.get('/user', async (req: Request, res: Response) => {
+router.get('/user/timeline', async (req: Request, res: Response) => {
   twitterService.getUserTweets(req.query.username, (response: any) => {
     res.send(response)
   })
+})
+
+router.get('/user/profile-picture', async (req: Request, res: Response) => {
+  try {
+    const { profile_image_url } = await twitterService.getUserProfilePic(req.query.username)
+
+    res.send(profile_image_url)
+  } catch(err) {
+    console.log(err)
+  }
 })
 
 router.get('/open-stream', async (req: Request, res: Response) => {

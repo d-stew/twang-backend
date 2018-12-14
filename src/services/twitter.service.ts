@@ -21,6 +21,21 @@ type TwitterData = {
   tweets: Array<TweetSummary>
 }
 
+type UserTweets = Array<Tweet>
+
+type TopTweet = {
+  username: string
+  retweets: number
+  favorites: number
+  engagement: number
+  timestamp: string
+  text?: string
+}
+
+type TopTweets = Array<TopTweet>
+
+type MonthlyStats = { [key: string]: { tweets: number; engagement: number; } }
+
 const twitterData: TwitterData = {
   count: 0,
   locations: [],
@@ -63,21 +78,27 @@ export const getTweets = (term: string, callback: Function, options?: TwitterOpt
   })
 
 export const getUserTweets = (username: string, callback: Function) => {
-  client.get('statuses/user_timeline', { screen_name: username }, (error: any, userData: any) => {
+  client.get('statuses/user_timeline', { screen_name: username, count: 200, exclude_replies: true, tweet_mode: 'extended' }, (error: any, userTweets: UserTweets) => {
     if (error) {
       log.info(error)
       return callback({ error, data: [] })
     }
 
-    return callback(userData)
+    const response = getUserData(userTweets)
+
+    return callback(response)
   })
+}
+
+export const getUserProfilePic = (username: string) => {
+  return client.get('users/show', { screen_name: username })
 }
 
 export const openStream = (keyword: string): string => {
   const stream = client.stream('statuses/filter', { track: keyword })
 
   stream.on('data', (event: Tweet) => {
-    parseTweet(event)
+    parseLiveTweet(event)
   })
 
   stream.on('error', (error: Error) => {
@@ -87,15 +108,53 @@ export const openStream = (keyword: string): string => {
   return 'Stream open'
 }
 
-function parseTweet(tweet: Tweet) {
-  checkLanguages(tweet)
+type UserDataResponse = { topTweets: TopTweets; monthlyStats: MonthlyStats}
+function getUserData(userTweets: UserTweets): UserDataResponse {
+  const topTweets: TopTweets = []
+  const monthlyStats: MonthlyStats = {}
 
-  checkLocations(tweet)
+  userTweets.forEach((tweet: Tweet) => {
+    const tweetSummary = {
+      username: tweet.user.screen_name,
+      timestamp: tweet.created_at,
+      month: tweet.created_at.split(' ')[1],
+      retweets: tweet.retweet_count || 0,
+      favorites: tweet.favorite_count || 0,
+      engagement: tweet.retweet_count + (tweet.favorite_count || 0),
+      text: tweet.full_text,
+    }
 
-  checkText(tweet)
+    if (topTweets.length < 5) {
+      topTweets.push(tweetSummary)
+    } else {
+      const engagementScores = topTweets.map((tweet) => tweet.engagement)
+      const min = engagementScores.reduce((a,b): number => Math.min(a,b))
+      const index: number = engagementScores.indexOf(min)
+
+      tweetSummary.engagement > min ? topTweets[index] = tweetSummary : null
+    }
+
+    if (!monthlyStats[tweetSummary.month]) {
+      monthlyStats[tweetSummary.month] = {
+        engagement: tweetSummary.engagement,
+        tweets: 1,
+      }
+    } else {
+      monthlyStats[tweetSummary.month].tweets += 1
+      monthlyStats[tweetSummary.month].engagement += tweetSummary.engagement
+    }
+  })
+
+  return { topTweets, monthlyStats }
 }
 
-function checkLanguages(tweet: Tweet): void {
+function parseLiveTweet(tweet: Tweet) {
+  parseLanguages(tweet)
+  parseLocations(tweet)
+  parseText(tweet)
+}
+
+function parseLanguages(tweet: Tweet): void {
   if (twitterData.languages[tweet.lang!]) {
     twitterData.languages[tweet.lang!] += 1
   } else {
@@ -103,7 +162,7 @@ function checkLanguages(tweet: Tweet): void {
   }
 }
 
-function checkLocations(tweet: Tweet): void {
+function parseLocations(tweet: Tweet): void {
   if (tweet.place && tweet.place.bounding_box) {
     const [[[longitude, latitude]]] = tweet.place.bounding_box.coordinates
 
@@ -121,14 +180,14 @@ function checkLocations(tweet: Tweet): void {
   }
 }
 
-function checkText(tweet: Tweet): void {
+function parseText(tweet: Tweet): void {
   if (tweet.text) {
     twitterData.tweets.push({
       user: tweet.user,
       favorites: tweet.favorite_count || 0,
       retweets: tweet.retweet_count,
       timestamp: tweet.created_at,
-      text: tweet.text
+      text: tweet.text,
     })
   }
 }
