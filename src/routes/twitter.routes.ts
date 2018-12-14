@@ -12,6 +12,12 @@ router.get('/', async (req: Request, res: Response) => {
   })
 });
 
+router.get('/user', async (req: Request, res: Response) => {
+  twitterService.getUserTweets(req.query.username, (response: any) => {
+    res.send(response)
+  })
+})
+
 router.get('/open-stream', async (req: Request, res: Response) => {
   twitterService.openStream(req.query.keyword)
 
