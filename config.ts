@@ -32,5 +32,5 @@ export const config: Config = {
   ENV: process.env.NODE_ENV! as Environment,
   FRONT_END_URL: process.env.NODE_ENV === Environment.Test ? 'http://localhost:8081' : process.env.FRONT_END_URL!,
   STATIC_IP: isTrue(process.env.STATIC_IP),
-  ALLOW_ORIGIN: process.env.ALLOW_ORIGIN ? process.env.ALLOW_ORIGIN.split(',') : ['https://twang.herokuapp.com']
+  ALLOW_ORIGIN: process.env.ALLOW_ORIGIN ? process.env.ALLOW_ORIGIN.split(',') : ['http://twang.herokuapp.com', 'https://twang.herokuapp.com']
 };
