@@ -8,7 +8,10 @@ const TwitterDataType = gql`
   }
 `
 
-const getTweets = async (_: {}, { keyword }: { keyword: string }) => twitterService.getTweets(keyword)
+const getTweets = async (_: {}, { keyword }: { keyword: string }) => twitterService.getTweets(keyword, () => {
+  return []
+})
+
 
 export const types = [
   TwitterDataType,
