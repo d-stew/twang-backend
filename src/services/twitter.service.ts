@@ -36,6 +36,13 @@ type TopTweets = Array<TopTweet>
 
 type MonthlyStats = { [key: string]: { tweets: number; engagement: number; } }
 
+type User = {
+  name: string,
+  followers: number,
+  totalTweets: number,
+  verified: boolean,
+}
+
 const twitterData: TwitterData = {
   count: 0,
   locations: [],
@@ -77,8 +84,8 @@ export const getTweets = (term: string, callback: Function, options?: TwitterOpt
     return callback(tweets)
   })
 
-export const getUserTweets = (username: string, callback: Function) => {
-  client.get('statuses/user_timeline', { screen_name: username, count: 200, exclude_replies: true, tweet_mode: 'extended' }, (error: any, userTweets: UserTweets) => {
+export const getUserInsights = (username: string, callback: Function) => {
+  client.get('statuses/user_timeline', { screen_name: username, count: 200, exclude_replies: true, include_rts: false, tweet_mode: 'extended' }, (error: any, userTweets: UserTweets) => {
     if (error) {
       log.info(error)
       return callback({ error, data: [] })
@@ -108,10 +115,16 @@ export const openStream = (keyword: string): string => {
   return 'Stream open'
 }
 
-type UserDataResponse = { topTweets: TopTweets; monthlyStats: MonthlyStats}
+type UserDataResponse = { topTweets: TopTweets; monthlyStats: MonthlyStats, user: User}
 function getUserData(userTweets: UserTweets): UserDataResponse {
   const topTweets: TopTweets = []
   const monthlyStats: MonthlyStats = {}
+  const user: User = {
+    name: userTweets[0].user.name,
+    followers: userTweets[0].user.followers_count,
+    verified: userTweets[0].user.verified,
+    totalTweets: userTweets[0].user.statuses_count,
+  } 
 
   userTweets.forEach((tweet: Tweet) => {
     const tweetSummary = {
@@ -145,7 +158,7 @@ function getUserData(userTweets: UserTweets): UserDataResponse {
     }
   })
 
-  return { topTweets, monthlyStats }
+  return { topTweets, monthlyStats, user }
 }
 
 function parseLiveTweet(tweet: Tweet) {

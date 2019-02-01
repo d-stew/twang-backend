@@ -12,8 +12,8 @@ router.get('/', async (req: Request, res: Response) => {
   })
 });
 
-router.get('/user/timeline', async (req: Request, res: Response) => {
-  twitterService.getUserTweets(req.query.username, (response: any) => {
+router.get('/user/insights', async (req: Request, res: Response) => {
+  twitterService.getUserInsights(req.query.username, (response: any) => {
     res.send(response)
   })
 })
