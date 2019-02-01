@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "build": "npm run clean; tsc -p . && rsync -a --include='*.png' ./src dist/",
+    "heroku-postbuild": "npm run build",
     "dev": "NODE_ENV=development nodemon -e js,ts --exec 'ts-node' --files --cache-directory .tscache --ignore dist/ ./server.ts | bunyan -o short -L",
     "start": "node ./dist/server.js",
     "tsc": "tsc"
