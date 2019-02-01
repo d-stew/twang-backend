@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_ENV=development nodemon -e js,ts --exec 'ts-node' --files --cache-directory .tscache --ignore dist/ ./server.ts | bunyan -o short -L",
-    "start": "node ./bin/www",
+    "start": "node ./dist/server.js",
     "tsc": "tsc"
   },
   "prettier": {
